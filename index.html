@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GROW Coaching in Action</title>
+  <style>
+    :root {
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-500: #64748b;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+      --blue-50: #eff6ff;
+      --blue-100: #dbeafe;
+      --blue-200: #bfdbfe;
+      --blue-600: #2563eb;
+      --blue-700: #1d4ed8;
+      --emerald-50: #ecfdf5;
+      --emerald-100: #d1fae5;
+      --emerald-600: #059669;
+      --amber-50: #fffbeb;
+      --amber-100: #fef3c7;
+      --amber-600: #d97706;
+      --red-600: #dc2626;
+      --white: #ffffff;
+      --shadow: 0 14px 34px rgba(15, 23, 42, 0.09);
+      --soft-shadow: 0 3px 10px rgba(15, 23, 42, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 32rem),
+        radial-gradient(circle at bottom right, rgba(5, 150, 105, 0.10), transparent 30rem),
+        var(--slate-50);
+      color: var(--slate-800);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    button, a { font: inherit; }
+
+    button {
+      cursor: pointer;
+      border: 0;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 22px;
+      padding-top: 70px;
+    }
+
+    .home-menu-wrap {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .topbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--slate-900);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: var(--blue-600);
+      color: var(--white);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--soft-shadow);
+      font-weight: 900;
+    }
+
+    .tiny-note {
+      color: var(--slate-500);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .intro {
+      margin-top: 52px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .headline-card,
+    .panel,
+    .content-card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--slate-200);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .headline-card { padding: 34px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--blue-50);
+      border: 1px solid var(--blue-100);
+      color: var(--blue-700);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      color: var(--slate-900);
+      font-size: clamp(34px, 6vw, 66px);
+      line-height: 0.98;
+      letter-spacing: -0.07em;
+      margin-bottom: 18px;
+    }
+
+    .lead {
+      color: var(--slate-600);
+      font-size: 17px;
+      line-height: 1.65;
+      max-width: 58ch;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      width: 100%;
+    }
+
+    .main-action {
+      width: 100%;
+      min-height: 190px;
+      padding: 22px;
+      border-radius: 28px;
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--soft-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      text-align: left;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .main-action > span:first-child {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 0;
+    }
+
+    .main-action:hover,
+    .main-action:focus-visible {
+      transform: translateY(-3px);
+      border-color: var(--blue-200);
+      box-shadow: var(--shadow);
+      outline: none;
+    }
+
+    .main-action:active { transform: translateY(-1px) scale(0.995); }
+
+    .action-title {
+      color: var(--slate-900);
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }
+
+    .action-text {
+      color: var(--slate-500);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .action-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .action-icon svg { width: 34px; height: 34px; }
+    .blue-icon { background: var(--blue-50); color: var(--blue-600); }
+    .emerald-icon { background: var(--emerald-50); color: var(--emerald-600); }
+
+    .section {
+      display: none;
+      min-height: 100vh;
+      padding-top: 82px;
+      animation: fadeUp 0.22s ease both;
+    }
+
+    .section.active { display: block; }
+    .hero.hidden { display: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .head-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      color: var(--slate-900);
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.05em;
+      font-weight: 900;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: 14px;
+      background: var(--slate-900);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: var(--soft-shadow);
+      white-space: nowrap;
+    }
+
+    .back-btn:hover,
+    .back-btn:focus-visible { background: var(--slate-700); outline: none; }
+
+    .back-btn.secondary {
+      background: var(--white);
+      color: var(--slate-800);
+      border: 1px solid var(--slate-200);
+    }
+
+    .back-btn.secondary:hover,
+    .back-btn.secondary:focus-visible {
+      background: var(--slate-100);
+      color: var(--slate-900);
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .choice-card,
+    .scenario-card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: 26px;
+      padding: 22px;
+      box-shadow: var(--soft-shadow);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .choice-card:hover,
+    .choice-card:focus-visible,
+    .scenario-card:hover,
+    .scenario-card:focus-visible {
+      transform: translateY(-3px);
+      border-color: var(--blue-200);
+      box-shadow: var(--shadow);
+      outline: none;
+    }
+
+    .choice-card h3,
+    .scenario-card h3 {
+      color: var(--slate-900);
+      font-size: 22px;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .choice-card p,
+    .scenario-card p {
+      color: var(--slate-500);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .content-card { padding: 24px; margin-top: 16px; }
+
+    .summary-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .grow-item {
+      border: 1px solid var(--slate-200);
+      border-radius: 22px;
+      padding: 18px;
+      background: var(--slate-50);
+    }
+
+    .grow-item h3 {
+      color: var(--red-600);
+      font-size: 19px;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .grow-item p {
+      color: var(--slate-700);
+      line-height: 1.58;
+      font-size: 15px;
+    }
+
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border: 1px solid var(--slate-300);
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .question-box {
+      padding: 20px;
+      border-right: 1px solid var(--slate-300);
+      border-bottom: 1px solid var(--slate-300);
+      min-height: 260px;
+    }
+
+    .question-box:nth-child(2n) { border-right: 0; }
+    .question-box:nth-child(n+3) { border-bottom: 0; }
+
+    .question-box h3 {
+      color: var(--red-600);
+      font-size: 18px;
+      margin-bottom: 10px;
+      text-decoration: underline;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+      line-height: 1.35;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .scenario-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      background: var(--slate-100);
+      color: var(--slate-900);
+      margin-bottom: 16px;
+      border: 1px solid var(--slate-200);
+    }
+
+    .scenario-icon svg { width: 44px; height: 44px; }
+
+    .tag {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--amber-50);
+      color: var(--amber-600);
+      border: 1px solid var(--amber-100);
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 14px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--slate-500);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .intro,
+      .choice-grid,
+      .summary-list,
+      .scenario-grid { grid-template-columns: 1fr; }
+
+      .hero { justify-content: flex-start; padding-top: 78px; }
+      .intro { margin-top: 0; }
+      .headline-card { padding: 24px; }
+      .main-action { min-height: 128px; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+      .questions-grid { grid-template-columns: 1fr; }
+      .question-box,
+      .question-box:nth-child(2n),
+      .question-box:nth-child(n+3) {
+        border-right: 0;
+        border-bottom: 1px solid var(--slate-300);
+        min-height: auto;
+      }
+      .question-box:last-child { border-bottom: 0; }
+      .tiny-note { display: none; }
+    }
+
+
+    @media (max-width: 560px) {
+      .menu-grid { grid-template-columns: 1fr; }
+      .main-action { min-height: 138px; }
+    }
+
+    @media (max-width: 480px) {
+      .page { padding: 14px; }
+      .topbar-inner { padding: 10px 14px; }
+      .headline-card,
+      .content-card { border-radius: 22px; }
+      .main-action { border-radius: 22px; padding: 18px; }
+      .action-icon { width: 52px; height: 52px; border-radius: 18px; }
+      .action-icon svg { width: 29px; height: 29px; }
+      .action-title { font-size: 21px; }
+      .lead { font-size: 15px; }
+      .content-card { padding: 16px; }
+      .grow-item { padding: 16px; }
+      .question-box { padding: 16px; }
+      .head-actions { width: 100%; }
+      .back-btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" aria-label="GROW Coaching in Action">
+        <div class="brand-mark" aria-hidden="true">G</div>
+        <span>GROW Coaching in Action</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="page">
+    <section id="home" class="hero" aria-labelledby="main-title">
+      <div class="home-menu-wrap">
+        <h1 id="main-title" class="visually-hidden">GROW Coaching in Action</h1>
+        <div class="menu-grid" aria-label="Main menu">
+          <button class="main-action" type="button" data-target="review-menu">
+            <span>
+              <span class="action-title">Review GROW Model</span>
+              <span class="action-text">Open the model summary and common coaching questions.</span>
+            </span>
+            <span class="action-icon blue-icon" aria-hidden="true">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5S19.832 5.477 21 6.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"></path></svg>
+            </span>
+          </button>
+
+          <button class="main-action" type="button" data-target="practice-menu">
+            <span>
+              <span class="action-title">Practice Scenarios</span>
+              <span class="action-text">Choose Alex, Sally, or Omar and start the simulation.</span>
+            </span>
+            <span class="action-icon emerald-icon" aria-hidden="true">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4.13a4 4 0 11-8 0 4 4 0 018 0zm6 2a3 3 0 11-6 0 3 3 0 016 0zM9 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="review-menu" class="section" aria-labelledby="review-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Review section</div>
+          <h2 id="review-title" class="section-title">Review GROW Model</h2>
+        </div>
+        <button class="back-btn" type="button" data-target="home">← Main Menu</button>
+      </div>
+
+      <div class="choice-grid">
+        <button class="choice-card" type="button" data-target="summary">
+          <h3>GROW Model Summary</h3>
+          <p>See the meaning of Goal, Reality, Options, and Wrap Up in a short practical format.</p>
+        </button>
+        <button class="choice-card" type="button" data-target="questions">
+          <h3>Common GROW Questions</h3>
+          <p>Use this question bank to recognize strong coaching questions in each GROW stage.</p>
+        </button>
+      </div>
+    </section>
+
+    <section id="summary" class="section" aria-labelledby="summary-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Quick reference</div>
+          <h2 id="summary-title" class="section-title">GROW Model Summary</h2>
+        </div>
+        <div class="head-actions" aria-label="Navigation actions">
+          <button class="back-btn secondary" type="button" data-target="review-menu">← Return to Previous Page</button>
+          <button class="back-btn" type="button" data-target="home">← Return to Main Page</button>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <div class="summary-list">
+          <article class="grow-item">
+            <h3>Goal setting</h3>
+            <p>A goal has to be set to give direction and purpose to the coaching session. Ambiguous goals are usually never achieved. Setting the goal first shapes your discussion with your employee and sets the tone.</p>
+          </article>
+          <article class="grow-item">
+            <h3>Reality check</h3>
+            <p>Both you and your employee must come to terms on the current state or level of performance or any issues that are causing breakdowns. Getting to the bottom of the problem begins with identifying it and claiming. From there, obstacles are better identified.</p>
+          </article>
+          <article class="grow-item">
+            <h3>Options developed</h3>
+            <p>Here you and your employee explore action steps that will help them improve their performance. Usually, options that are prefabricated by an employee’s manager result in poor buy-in and missed goals. Allow your employees to explore options they develop.</p>
+          </article>
+          <article class="grow-item">
+            <h3>Wrap it up with a plan</h3>
+            <p>Once you nail down an option or two, it is time to strike it down on paper so to speak. If it is not written down, it won’t happen. Creating a well-defined plan is essential to knowing the direction you need to go to demonstrate success or failure.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="questions" class="section" aria-labelledby="questions-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Question bank</div>
+          <h2 id="questions-title" class="section-title">Common GROW Questions</h2>
+        </div>
+        <div class="head-actions" aria-label="Navigation actions">
+          <button class="back-btn secondary" type="button" data-target="review-menu">← Return to Previous Page</button>
+          <button class="back-btn" type="button" data-target="home">← Return to Main Page</button>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <div class="questions-grid">
+          <section class="question-box" aria-labelledby="goal-q">
+            <h3 id="goal-q">Goal</h3>
+            <ul>
+              <li>What do you want to achieve?</li>
+              <li>What is important to you right now?</li>
+              <li>What would you like to get from the next 30 minutes?</li>
+              <li>What areas do you want to work on?</li>
+              <li>Describe your perfect world.</li>
+              <li>What do you want to achieve as a result of this session?</li>
+              <li>What will make you feel this time has been well spent?</li>
+            </ul>
+          </section>
+
+          <section class="question-box" aria-labelledby="reality-q">
+            <h3 id="reality-q">Reality</h3>
+            <ul>
+              <li>Where are you now in relation to your goal?</li>
+              <li>On a scale of 1 -10 where are you?</li>
+              <li>What has contributed to your success so far?</li>
+              <li>What skills/knowledge/attributes do you have?</li>
+              <li>What progress have you made so far?</li>
+              <li>What is working well right now?</li>
+              <li>What is required of you?</li>
+            </ul>
+          </section>
+
+          <section class="question-box" aria-labelledby="options-q">
+            <h3 id="options-q">Options</h3>
+            <ul>
+              <li>What are your options?</li>
+              <li>How have you tacked this/a similar situation before?</li>
+              <li>What could you do differently?</li>
+              <li>Who do you know who has encountered a similar situation?</li>
+              <li>Give me 5 options.</li>
+              <li>If anything were possible, what would you do?</li>
+              <li>What else?</li>
+            </ul>
+          </section>
+
+          <section class="question-box" aria-labelledby="wrap-q">
+            <h3 id="wrap-q">Wrap up</h3>
+            <ul>
+              <li>Which options work best for you?</li>
+              <li>What one small step are you going to take now?</li>
+              <li>What actions will you take?</li>
+              <li>When are you going to start?</li>
+              <li>Who will help you?</li>
+              <li>How will you know you have been successful?</li>
+              <li>How will you ensure that you do it?</li>
+              <li>On a scale of 1 -10 how committed /motivated are you to doing it?</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="practice-menu" class="section" aria-labelledby="practice-title">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Scenario practice</div>
+          <h2 id="practice-title" class="section-title">Practice Scenarios</h2>
+        </div>
+        <button class="back-btn" type="button" data-target="home">← Main Menu</button>
+      </div>
+
+      <div class="scenario-grid">
+        <a class="scenario-card" href="alex-grow-scenario-1.html" aria-label="Open Alex scenario">
+          <div class="scenario-icon" aria-hidden="true">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+          </div>
+          <h3>Alex</h3>
+          <p>Practice coaching an employee who is overwhelmed and falling behind on reports.</p>
+          <span class="tag">Scenario 1</span>
+        </a>
+
+        <a class="scenario-card" href="sally-grow-scenario-2.html" aria-label="Open Sally scenario">
+          <div class="scenario-icon" aria-hidden="true">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+          </div>
+          <h3>Sally</h3>
+          <p>Practice coaching an employee who struggles to speak up in client meetings.</p>
+          <span class="tag">Scenario 2</span>
+        </a>
+
+        <a class="scenario-card" href="omar-grow-scenario-3.html" aria-label="Open Omar scenario">
+          <div class="scenario-icon" aria-hidden="true">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+          </div>
+          <h3>Omar</h3>
+          <p>Practice coaching an employee facing difficult handover and ownership issues.</p>
+          <span class="tag">Scenario 3</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    'use strict';
+
+    const sections = ['home', 'review-menu', 'summary', 'questions', 'practice-menu'];
+
+    function showSection(id) {
+      sections.forEach(function(sectionId) {
+        const el = document.getElementById(sectionId);
+        if (!el) return;
+        if (sectionId === 'home') {
+          el.classList.toggle('hidden', id !== 'home');
+        } else {
+          el.classList.toggle('active', sectionId === id);
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.addEventListener('click', function(event) {
+      const trigger = event.target.closest('[data-target]');
+      if (!trigger) return;
+      const target = trigger.getAttribute('data-target');
+      if (sections.indexOf(target) !== -1) {
+        showSection(target);
+      }
+    });
+  </script>
+</body>
+</html>
